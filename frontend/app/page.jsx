@@ -14,7 +14,7 @@ export default function Home() {
   const handleShareClick = async () => {
     try {
       if (text.length === 0) return;
-      const response = await fetch("http://127.0.0.1:5000/api/uploadText", {
+      const response = await fetch("/api/uploadText", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

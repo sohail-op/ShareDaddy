@@ -27,7 +27,7 @@ export default function Home() {
 
   const handleShareClick = async () => {
     try {
-      const response = await fetch(`/api/getText/${generatedCode}`, {
+      const response = await fetch(`api/getText/${generatedCode}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
