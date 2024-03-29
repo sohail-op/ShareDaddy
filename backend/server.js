@@ -20,8 +20,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api", router);
-app.use("/", (res, req) => {
-  res.send("Welcome to Home");
+
+app.get("/", (req, res) => {
+  res.send("Welcome to the Text API");
 });
 
 app.get(errorHandler);
