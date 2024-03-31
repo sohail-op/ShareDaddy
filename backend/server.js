@@ -1,19 +1,16 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-// import path from "path";
 
 import router from "./routes/textRoute.js";
 import connectDb from "./config/dbConnection.js";
-import errorHandler from "./middleware/errorHandler";
+import errorHandler from "./middleware/errorHandler.js/index.js";
 
 connectDb();
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5001;
-
-// const __dirname = path.resolve();
 
 app.use(cors());
 
@@ -26,12 +23,6 @@ app.get("/", (req, res) => {
 });
 
 app.get(errorHandler);
-
-// app.use(express.static(path.join(__dirname, "/frontend/dist")));
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
-// });
 
 app.listen(port, () => {
   console.log(`Server is Listening on http://localhost:${port}`);
