@@ -28,7 +28,7 @@ export default function Home() {
   const handleShareClick = async () => {
     try {
       const response = await fetch(
-        `https://tshare-backend.vercel.app/${generatedCode}`,
+        `https://tshare-backend.vercel.app/api/getText/${generatedCode}`,
         {
           method: "GET",
           headers: {
