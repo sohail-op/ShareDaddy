@@ -14,17 +14,19 @@ export default function Home() {
   const handleShareClick = async () => {
     try {
       if (text.length === 0) return;
-      const response = await fetch("/api/uploadText", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text }),
-      });
+      const response = await fetch(
+        "https://tshare-backend.vercel.app/api/uploadText",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text }),
+        }
+      );
       const data = await response.json();
       if (data.genCode) {
         setGeneratedCode(data.genCode);
-        // Removed alert("Code generated");
       }
     } catch (error) {
       console.error("Error:", error);

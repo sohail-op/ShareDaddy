@@ -27,12 +27,15 @@ export default function Home() {
 
   const handleShareClick = async () => {
     try {
-      const response = await fetch(`/api/getText/${generatedCode}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://tshare-backend.vercel.app/${generatedCode}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       if (data.Text) {
         setText(data.Text);
