@@ -5,11 +5,12 @@ import cors from "cors";
 import router from "./routes/textRoute.js";
 import connectDb from "./config/dbConnection.js";
 import errorHandler from "./middleware/errorHandler.js";
+import {app, server} from "./socket/socket.js"
 
 connectDb();
 dotenv.config();
 
-const app = express();
+// const app = express();
 const port = process.env.PORT || 5001;
 
 app.use(cors());
@@ -24,6 +25,6 @@ app.get("/", (req, res) => {
 
 app.get(errorHandler);
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is Listening on http://localhost:${port}`);
 });
