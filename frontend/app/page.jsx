@@ -1,11 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import io from "socket.io-client";
+
+const socket = io("https://tshare-backend.vercel.app");
 
 export default function Home() {
+
   const [generatedCode, setGeneratedCode] = useState("");
   const [text, setText] = useState("");
+
+  useEffect(() => {
+    const onConnect = () => console.log("Connected to server");
+    const onDisconnect = () => console.log("Disconnected from server");
+
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+    };
+  }, []);
 
   const handleTextChange = (event) => {
     setText(event.target.value);
@@ -13,20 +30,19 @@ export default function Home() {
 
   const handleShareClick = async () => {
     try {
-      if (text.length === 0) return;
-      const response = await fetch(
-        "https://tshare-backend.vercel.app/api/uploadText",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ text }),
-        }
-      );
+      if (text.trim().length === 0) return;
+
+      const response = await fetch("https://tshare-backend.vercel.app/api/uploadText", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+
       const data = await response.json();
+
       if (data.genCode) {
         setGeneratedCode(data.genCode);
+        socket.emit("getCode", data.genCode);
       }
     } catch (error) {
       console.error("Error:", error);
