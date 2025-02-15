@@ -18,7 +18,7 @@
             "headers": [
                 {
                     "key": "Access-Control-Allow-Origin",
-                    "value": "https://tshare-frontend.vercel.app"
+                    "value": "https://tshare-14h1.onrender.com"
                 },
                 {
                     "key": "Access-Control-Allow-Methods",
