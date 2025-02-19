@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import io from "socket.io-client";
 
-const socket = io("https://tshare-backend.vercel.app");
+const socket = io("http://localhost:5000");
 
 export default function Home() {
 
@@ -12,17 +12,12 @@ export default function Home() {
   const [text, setText] = useState("");
 
   useEffect(() => {
-    const onConnect = () => console.log("Connected to server");
-    const onDisconnect = () => console.log("Disconnected from server");
-
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-
-    return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-    };
+    socket.on("connect", () => console.log("Connected to server"));
+    socket.on("disconnect", () => console.log("Disconnected from server"));
+  
+    return () => socket.off("connect").off("disconnect");
   }, []);
+  
 
   const handleTextChange = (event) => {
     setText(event.target.value);
@@ -32,7 +27,7 @@ export default function Home() {
     try {
       if (text.trim().length === 0) return;
 
-      const response = await fetch("https://tshare-backend.vercel.app/api/uploadText", {
+      const response = await fetch("http://localhost:5000/api/uploadText", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),

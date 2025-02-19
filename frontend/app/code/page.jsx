@@ -1,11 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import io from "socket.io-client";
+
+const socket = io("http://localhost:5000");
 
 export default function Home() {
   const [generatedCode, setGeneratedCode] = useState("");
   const [text, setText] = useState("");
+
+socket.on("connect", () => {
+  // console.log("Connected to server code");
+})
+  useEffect(() => {
+    socket?.on("newText", (text) => {
+      // console.log("Received from socket:", text);
+      setText(text);
+    });
+
+    return () => socket?.off("newText");
+  }, []);
 
   const handleTextChange = (event) => {
     setText(event.target.value);
@@ -26,25 +41,31 @@ export default function Home() {
   };
 
   const handleShareClick = async () => {
+    if (!generatedCode.trim()) {
+      console.warn("No generated code entered");
+      return;
+    }
+  
     try {
       const response = await fetch(
-        `https://tshare-backend.vercel.app/api/getText/${generatedCode}`,
+        `http://localhost:5000/api/getText/${generatedCode}`,
         {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         }
       );
+  
       const data = await response.json();
       if (data.Text) {
         setText(data.Text);
         copyText(data.Text);
+        socket.emit("getCode", generatedCode);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error fetching text:", error);
     }
   };
+  
 
   return (
     <div className="h-screen flex justify-center items-center bg-[#171c24]">

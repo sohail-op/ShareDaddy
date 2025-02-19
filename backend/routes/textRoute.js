@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.route("/uploadText").post(uploadText);
 router.route("/getText/:code").get(getText);
-router.route("/deleteExpiredText").delete(deleteExpiredText);
+router.route("/deleteExpiredText").delete(deleteExpiredText); // delete auto text after 15 mins
 
 export default router;

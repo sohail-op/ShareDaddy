@@ -14,17 +14,14 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("User connected: ", socket.id);
+  socket.on("getCode", (code) => {
+    socket.join(code);
+  });
 
-  socket.on('getCode', (code)=>{
-    console.log(code);
-  }
-)
-
-socket.on('disconnect', () => {
-  console.log(`User disconnected: ${socket.id}`);
+  socket.on("disconnect", () => {
+    // console.log(`User disconnected: ${socket.id}`);
+  });
 });
 
-});
 
 export { app, server, io };

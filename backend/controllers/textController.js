@@ -1,6 +1,7 @@
 import cryptoRandomString from "crypto-random-string";
 import expressAsyncHandler from "express-async-handler";
 
+import { io } from "../socket/socket.js";
 import File from "../model/fileModel.js";
 
 //@des Upload text
@@ -8,7 +9,7 @@ import File from "../model/fileModel.js";
 // @access Public
 export const uploadText = expressAsyncHandler(async (req, res) => {
   const text = req.body.text;
-  const genCode = await cryptoRandomString({ length: 4, type: "numeric" });
+  const genCode = cryptoRandomString({ length: 4, type: "numeric" });
 
   if (!text) {
     res.status(400);
@@ -17,6 +18,8 @@ export const uploadText = expressAsyncHandler(async (req, res) => {
     await File.create({ text, code: genCode });
     res.status(201).json({ genCode });
   }
+
+  io.to(genCode).emit("newText", text);
 });
 
 //@des Get uploaded texts
