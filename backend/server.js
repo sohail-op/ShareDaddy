@@ -10,10 +10,9 @@ import {app, server} from "./socket/socket.js"
 connectDb();
 dotenv.config();
 
-// const app = express();
 const port = process.env.PORT || 5001;
 
-app.use(cors({ origin: "https://tshare-frontend.vercel.app" }));
+app.use(cors({ origin: "*" }));
 
 app.use(express.json());
 
