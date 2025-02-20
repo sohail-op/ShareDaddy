@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import compression from "compression";
 
 import router from "./routes/textRoute.js";
 import connectDb from "./config/dbConnection.js";
@@ -28,6 +29,8 @@ app.use(
     }
   })
 );
+
+app.use(compression());
 
 app.use(express.json());
 

@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import io from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+import socket from "../../utils/socket.js";
 
 export default function Home() {
   const [generatedCode, setGeneratedCode] = useState("");
@@ -48,12 +47,19 @@ socket.on("connect", () => {
   
     try {
       const response = await fetch(
-        `https://tshare-14h1.onrender.com/api/getText/${generatedCode}`,
+        `http://localhost:5000/api/getText/${generatedCode}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         }
       );
+      // const response = await fetch(
+      //   `https://tshare-14h1.onrender.com/api/getText/${generatedCode}`,
+      //   {
+      //     method: "GET",
+      //     headers: { "Content-Type": "application/json" },
+      //   }
+      // );
   
       const data = await response.json();
       if (data.Text) {

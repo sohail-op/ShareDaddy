@@ -1,8 +1,12 @@
 import cryptoRandomString from "crypto-random-string";
 import expressAsyncHandler from "express-async-handler";
+import Redis from "ioredis";
 
 import { io } from "../socket/socket.js";
 import File from "../model/fileModel.js";
+
+const redis = new Redis();
+
 
 //@des Upload text
 //@route POST /api/uploadText
@@ -11,14 +15,15 @@ export const uploadText = expressAsyncHandler(async (req, res) => {
   const text = req.body.text;
   const genCode = cryptoRandomString({ length: 4, type: "numeric" });
 
-  if (!text) {
+  if (!text.trim()) {
     res.status(400);
     throw new Error("No Text Provided");
-  } else {
-    await File.create({ text, code: genCode });
-    res.status(201).json({ genCode });
   }
 
+    await File.create({ text, code: genCode }); //store in MongoDB
+    await redis.setex(genCode, 600, text); //store in Redis
+    res.status(201).json({ genCode });
+  
   io.to(genCode).emit("newText", text);
 });
 
@@ -31,20 +36,21 @@ export const getText = expressAsyncHandler(async (req, res) => {
   if (!code) {
     res.status(400);
     throw new Error("No Code provided");
-  } else {
+  } 
+
+  const cachedText = await redis.get(code);
+  if (cachedText) {
+    return res.json({ Text: cachedText });
+  }
+
     const file = await File.findOne({ code });
     if (!file) {
       res.status(404);
       throw new Error("Could not find the requested file!");
-    } else {
-      res.json({ Text: file.text });
     }
-  }
-});
 
-//@des Delete uploaded text
-//@route DELETE /api/deleteExpiredText
-// @access Public
-export const deleteExpiredText = (req, res) => {
-  res.send("Deleted Expired Texts");
-};
+    await redis.setex(code, 600, file.text);
+  
+    res.json({ Text: file.text });
+
+});
