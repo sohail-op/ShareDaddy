@@ -2,8 +2,7 @@ import express from "express";
 
 import {
   uploadText,
-  getText,
-  deleteExpiredText,
+  getText
 } from "../controllers/textController.js";
 
 const router = express.Router();
