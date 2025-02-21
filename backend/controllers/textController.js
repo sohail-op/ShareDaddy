@@ -5,7 +5,9 @@ import Redis from "ioredis";
 import { io } from "../socket/socket.js";
 import File from "../model/fileModel.js";
 
-const redis = new Redis();
+const redis = new Redis(process.env.REDIS_URL, {
+  tls: {}
+});
 
 
 //@des Upload text
