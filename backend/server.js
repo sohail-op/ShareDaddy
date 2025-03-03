@@ -15,7 +15,7 @@ const port = process.env.PORT || 5001;
 
 const allowedOrigins = [
   "https://tshare-frontend.onrender.com",
-  "http://localhost:3000",
+  process.env.FRONTEND_BASE_URL,
 ];
 
 app.use(

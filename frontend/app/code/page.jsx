@@ -47,7 +47,7 @@ socket.on("connect", () => {
   
     try {
       const response = await fetch(
-        `https://tshare-14h1.onrender.com/api/getText/${generatedCode}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/getText/${generatedCode}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },

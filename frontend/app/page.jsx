@@ -26,12 +26,7 @@ export default function Home() {
     try {
       if (text.trim().length === 0) return;
 
-      // const response = await fetch("https://tshare-14h1.onrender.com/api/uploadText", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ text }),
-      // });
-      const response = await fetch("http://localhost:5000/api/uploadText", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/uploadText`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
@@ -44,7 +39,7 @@ export default function Home() {
         socket.emit("getCode", data.genCode);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error.message);
     }
   };
 
