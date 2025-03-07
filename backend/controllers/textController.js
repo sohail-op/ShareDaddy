@@ -5,22 +5,12 @@ import Redis from "ioredis";
 import { io } from "../socket/socket.js";
 import File from "../model/fileModel.js";
 
-// const redis = new Redis(process.env.REDIS_URL, {
-//   tls: {},
-//   connectTimeout: 10000,
-// });
 
 const redis = new Redis({
   host: process.env.REDIS_SERVICE_NAME,
   port: process.env.REDIS_PORT || 6379,
 });
 
-// const redis = new Redis({
-//   host: process.env.REDIS_HOST,
-//   port: process.env.REDIS_PORT,
-//   username: process.env.REDIS_USERNAME,
-//   password: process.env.REDIS_PASSWORD
-// })
 
 redis.connect(()=>{ console.log("Connected to Redis") });
 
