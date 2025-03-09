@@ -11,9 +11,31 @@ const redis = new Redis({
   port: process.env.REDIS_PORT || 6379,
 });
 
-
 redis.connect(()=>{ console.log("Connected to Redis") });
 
+
+//@des Upload File
+//@route POST /api/uploadFile
+// @access Public
+export const uploadFile = expressAsyncHandler(async (req, res) => {
+  if (!req.file) {
+    res.status(400);
+    throw new Error("No file uploaded!");
+  }
+
+  const genCode = cryptoRandomString({ length: 4, type: "numeric" });
+
+   await File.create({
+    code: genCode,
+    fileUrl: `/uploads/${req.file.filename}`,
+    fileName: req.file.originalname,
+    fileType: req.file.mimetype,
+  });
+
+  res.status(201).json({ genCode, fileName: req.file.originalname });
+
+  // res.status(200).json({ message: "File uploaded successfully" });
+});
 
 //@des Upload text
 //@route POST /api/uploadText
@@ -34,10 +56,10 @@ export const uploadText = expressAsyncHandler(async (req, res) => {
   io.to(genCode).emit("newText", text);
 });
 
-//@des Get uploaded texts
-//@route GET /api/getText/:code
-// @access Public
-export const getText = expressAsyncHandler(async (req, res) => {
+//@des Get uploaded text/file
+//@route GET /api/getTextOrFile/:code
+//@access Public
+export const getTextOrFile = expressAsyncHandler(async (req, res) => {
   const { code } = req.params;
 
   if (!code) {
@@ -45,19 +67,26 @@ export const getText = expressAsyncHandler(async (req, res) => {
     throw new Error("No Code provided");
   } 
 
-  const cachedText = await redis.get(code);
-  if (cachedText) {
-    return res.json({ Text: cachedText });
-  }
+  // const cachedFile = await redis.get(code);
+  // if (cachedFile.fileUrl) {
+  //   return res.json({ fileUrl: cachedFile.fileUrl, fileName: cachedFile.fileName });
+  // }
+  // else if(cachedFile.body){
+  //   return res.json({ text: cachedFile.body });
+  // }
 
-    const file = await File.findOne({ code });
-    if (!file) {
+    const fileData = await File.findOne({ code });
+    if (!fileData) {
       res.status(404);
       throw new Error("Could not find the requested file!");
     }
 
-    await redis.setex(code, 600, file.text);
+    // await redis.setex(code, 600, fileData.text);
   
-    res.json({ Text: file.text });
+    if (fileData.fileUrl) {
+      res.json({ fileUrl: fileData.fileUrl, fileName: fileData.fileName });
+    } else {
+      res.json({ text: fileData.text });
+    }
 
 });

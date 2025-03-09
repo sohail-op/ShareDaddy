@@ -4,10 +4,10 @@
   "description": "A simple Text sharing website.",
   "main": "server.js",
   "scripts": {
-  "start": "concurrently \"redis-server\" \"node ./server.js\"",
-  "dev": "concurrently \"redis-server\" \"nodemon ./server.js\"",
-  "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
-},
+    "start": "concurrently \"redis-server\" \"node ./server.js\"",
+    "dev": "concurrently \"redis-server\" \"nodemon ./server.js\"",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+  },
   "type": "module",
   "author": "Sohail Khan",
   "license": "ISC",
@@ -24,6 +24,7 @@
     "express-async-handler": "^1.2.0",
     "ioredis": "^5.5.0",
     "mongoose": "^8.2.3",
+    "multer": "^1.4.5-lts.1",
     "socket.io": "^4.8.1"
   }
 }

@@ -2,13 +2,15 @@ import mongoose from "mongoose";
 
 const fileSchema = new mongoose.Schema(
   {
-    text: { type: String, required: [true, "Please  provide text content"] },
-
+    text: { type: String },
     code: { type: String, required: [true, "Code is missing"], unique: true },
+    fileUrl: { type: String },
+    fileName: { type: String },
+    fileType: { type: String },
 
     expiresAt: {
       type: Date,
-      default: () => new Date(Date.now() + 30 * 60 * 1000), // Set expiry time (15 mins)
+      default: () => new Date(Date.now() + 30 * 60 * 1000), // Set expiry time (30 mins)
       index: { expires: "30m" }, // TTL index for auto-deletion
     },
   },

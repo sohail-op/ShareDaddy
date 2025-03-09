@@ -34,13 +34,14 @@ app.use(compression());
 
 app.use(express.json());
 
+app.use(errorHandler);
+
 app.use("/api", router);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Text API");
 });
 
-app.use(errorHandler);
 
 server.listen(port, () => {
   console.log(`Server is Listening on http://localhost:${port}`);
