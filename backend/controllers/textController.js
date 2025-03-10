@@ -1,10 +1,16 @@
 import cryptoRandomString from "crypto-random-string";
 import expressAsyncHandler from "express-async-handler";
 import Redis from "ioredis";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import { io } from "../socket/socket.js";
 import File from "../model/fileModel.js";
 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const redis = new Redis({
   host: process.env.REDIS_SERVICE_NAME,
@@ -82,11 +88,24 @@ export const getTextOrFile = expressAsyncHandler(async (req, res) => {
     }
 
     // await redis.setex(code, 600, fileData.text);
-  
-    if (fileData.fileUrl) {
-      res.json({ fileUrl: fileData.fileUrl, fileName: fileData.fileName });
-    } else {
-      res.json({ text: fileData.text });
+    
+    if (fileData.text) {
+      return res.status(200).json({ text: fileData.text });
     }
+  
+    // Serve file as an attachment
+    const filePath = path.join(__dirname, "..", "uploads", fileData.fileName);
+  
+    if (!fs.existsSync(filePath)) {
+      res.status(404);
+      throw new Error("File not found on server!");
+    }
+  
+    res.download(filePath, fileData.fileName, (err) => {
+      if (err) {
+        console.error("Error sending file:", err);
+        res.status(500).json({ error: "File download failed" });
+      }
+    });
 
 });
