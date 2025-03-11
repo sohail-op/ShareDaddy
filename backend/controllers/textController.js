@@ -101,11 +101,11 @@ export const getTextOrFile = expressAsyncHandler(async (req, res) => {
       throw new Error("File not found on server!");
     }
   
-    res.download(filePath, fileData.fileName, (err) => {
-      if (err) {
-        console.error("Error sending file:", err);
-        res.status(500).json({ error: "File download failed" });
-      }
-    });
-
+    // res.download(filePath, fileData.fileName, (err) => {
+    //   if (err) {
+    //     console.error("Error sending file:", err);
+    //     res.status(500).json({ error: "File download failed" });
+    //   }
+    // });
+    res.status(200).json({ fileName: fileData.fileName, filePath: filePath });
 });
