@@ -4,7 +4,7 @@ const fileSchema = new mongoose.Schema(
   {
     text: { type: String },
     code: { type: String, required: [true, "Code is missing"], unique: true },
-    fileUrl: { type: String },
+    fileData: { type: String },
     fileName: { type: String },
     fileType: { type: String },
 
