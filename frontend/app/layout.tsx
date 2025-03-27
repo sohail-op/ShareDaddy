@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Rochester } from "next/font/google";
 import "./globals.css";
 import React from "react";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
+const rochester = Rochester({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-rochester",
+});
+
+
 export const metadata: Metadata = {
-  title: "Text share",
-  description: "Easy &  fast text sharing for your friends.",
+  title: "Text and File Sharing",
+  description: "Easy & fast text & file sharing for your friends.",
 };
 
 export default function RootLayout({
