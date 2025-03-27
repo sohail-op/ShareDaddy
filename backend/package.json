@@ -1,7 +1,7 @@
 {
-  "name": "qtext",
+  "name": "shareDaddy-backend",
   "version": "1.0.0",
-  "description": "A simple Text sharing website.",
+  "description": "A website where you can share text and files.",
   "main": "server.js",
   "scripts": {
     "start": "concurrently \"redis-server\" \"node ./server.js\"",

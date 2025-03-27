@@ -32,14 +32,14 @@ app.use(
 
 app.use(compression());
 
-app.use(express.json());
+app.use(express.json({ limit: '100mb' }));
 
 app.use(errorHandler);
 
 app.use("/api", router);
 
 app.get("/", (req, res) => {
-  res.send("Welcome to the Text API");
+  res.send("Backend is running");
 });
 
 
