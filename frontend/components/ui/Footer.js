@@ -5,7 +5,7 @@ const Footer = () => {
     return (
         <div className="bg-[#222831] text-[#EEEEEE] py-2 text-center">
         <p className="text-sm md:text-base">
-          It's {" "}
+          It&apos;s {" "}
           <a
             href="https://github.com/sohail-op/ShareDaddy"
             className="text-[#00ADB5] hover:text-[#33E0E6] underline transition duration-300"
@@ -14,7 +14,7 @@ const Footer = () => {
           >
             open source
           </a>
-          , so if something's broken… congrats, it's your problem now!
+          , so if something&apos;s broken… congrats, it&apos;s your problem now!
         </p>
       </div>
     );
