@@ -40,10 +40,10 @@ const ReceiveContent = () => {
   }, [action]);
 
   return (
-    <div className="w-1/2 bg-[#2E2E2E] p-12 pt-20">
+    <div className="w-full md:w-1/2 bg-[#2E2E2E] p-8 md:p-12 pt-16 md:pt-20">
       <div className="max-w-xl mx-auto space-y-6">
         <h2 className="text-xl font-medium text-white/90">Receive Content</h2>
-
+  
         <InputField
           value={shareCode}
           onChange={(e) => setShareCode(e.target.value)}
@@ -52,7 +52,7 @@ const ReceiveContent = () => {
           onClick={handleRetrieveContent}
           onKeyDown={handleKeyDown}
         />
-        
+  
         <TextInput
           placeholder="Shared content will appear here"
           value={text}
@@ -61,7 +61,7 @@ const ReceiveContent = () => {
         />
       </div>
     </div>
-  );
+  );  
 };
 
 export default ReceiveContent;

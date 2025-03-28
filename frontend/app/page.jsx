@@ -8,7 +8,7 @@ import Footer from "../components/ui/Footer";
 const App = () => {
   return (
     <div>
-      <div className="flex min-h-screen">
+      <div className="flex flex-col md:flex-row min-h-screen">
         <ShareContent />
         <ReceiveContent />
       </div>
