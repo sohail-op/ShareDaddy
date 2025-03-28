@@ -9,7 +9,12 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_BASE_URL,
+    origin: [
+      "https://sharedaddy.onrender.com",
+      "https://share-daddy.vercel.app",
+      "http://sharedaddy.co",
+      process.env.FRONTEND_BASE_URL || "http://localhost:3000",
+    ],
     methods: ["GET", "POST"],
   },
 });

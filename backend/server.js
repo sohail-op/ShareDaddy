@@ -14,7 +14,9 @@ dotenv.config();
 const port = process.env.PORT || 5001;
 
 const allowedOrigins = [
-  "https://tshare-frontend.onrender.com",
+  "https://sharedaddy.onrender.com",
+  "https://share-daddy.vercel.app",
+  "http://sharedaddy.co",
   process.env.FRONTEND_BASE_URL,
 ];
 
@@ -32,7 +34,7 @@ app.use(
 
 app.use(compression());
 
-app.use(express.json({ limit: '100mb' }));
+app.use(express.json({ limit: '100mb' } ));
 
 app.use(errorHandler);
 
