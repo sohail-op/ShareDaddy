@@ -16,15 +16,23 @@ const port = process.env.PORT || 5001;
 const allowedOrigins = [
   "https://sharedaddy.onrender.com",
   "https://share-daddy.vercel.app",
-  "http://sharedaddy.co",
+  "https://sharedaddy.co",
+  "https://www.sharedaddy.co",
   process.env.FRONTEND_BASE_URL,
 ];
+
 
 app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
+
+        const isAllowed = allowedOrigins.includes(origin) ||
+          origin.endsWith('.sharedaddy.co')
+        if (isAllowed) {
+          callback(null, true);
+        }
       } else {
         console.log(`Blocked CORS request from: ${origin}`);
         callback(new Error("CORS policy does not allow this origin"));
