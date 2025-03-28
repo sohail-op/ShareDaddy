@@ -6,7 +6,7 @@
   "scripts": {
     "start": "concurrently \"redis-server\" \"node ./server.js\"",
     "dev": "concurrently \"redis-server\" \"nodemon ./server.js\"",
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+    "build": "npm install"
   },
   "type": "module",
   "author": "Sohail Khan",

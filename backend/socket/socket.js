@@ -15,7 +15,7 @@ const io = new Server(server, {
       "http://sharedaddy.co",
       process.env.FRONTEND_BASE_URL || "http://localhost:3000",
     ],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "OPTIONS"],
   },
 });
 
