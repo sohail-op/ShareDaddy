@@ -25,21 +25,24 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
+      if (!origin) {
+        return callback(null, true);
+      }
 
-        const isAllowed = allowedOrigins.includes(origin) ||
-          origin.endsWith('.sharedaddy.co')
-        if (isAllowed) {
-          callback(null, true);
-        }
+      const isAllowed =
+        allowedOrigins.includes(origin) ||
+        origin.endsWith('.sharedaddy.co');
+
+      if (isAllowed) {
+        callback(null, true);
       } else {
         console.log(`Blocked CORS request from: ${origin}`);
         callback(new Error("CORS policy does not allow this origin"));
       }
-    }
+    },
   })
 );
+
 
 app.use(compression());
 
