@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "A website where you can share text and files.",
   "main": "server.js",
-  "scripts": {
-    "start": "concurrently \"redis-server\" \"node ./server.js\"",
-    "dev": "concurrently \"redis-server\" \"nodemon ./server.js\"",
-    "build": "npm install"
-  },
+"scripts": {
+  "start": "node ./server.js",
+  "dev": "nodemon ./server.js",
+  "build": "npm install"
+},
   "type": "module",
   "author": "Sohail Khan",
   "license": "ISC",
