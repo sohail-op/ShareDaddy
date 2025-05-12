@@ -1,9 +1,13 @@
 import cryptoRandomString from "crypto-random-string";
 import expressAsyncHandler from "express-async-handler";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 import File from "../model/fileModel.js";
 import { io } from "../socket/socket.js";
 import {redis} from "../config/redis.js";
+import { uploadToR2 } from "../config/r2config.js";
 
 
 //@des Upload text
@@ -36,8 +40,10 @@ export const uploadFile = expressAsyncHandler(async (req, res) => {
   
   const genCode = cryptoRandomString({ length: 5, type: "numeric" });
   
+  const result = await uploadToR2(req.file);
+  
   const fileDetails = {
-    fileData: req.file.buffer.toString("base64"),
+    fileData: result.Location,
     fileName: req.file.originalname,
     fileType: req.file.mimetype,
   };
@@ -50,9 +56,9 @@ export const uploadFile = expressAsyncHandler(async (req, res) => {
   
   await redis.set(genCode, JSON.stringify(fileDetails), "EX", 600);
   
-  io.emit("file:uploaded", {genCode, fileName: req.file.originalname});
-  
-  res.status(201).json({ genCode, fileName: req.file.originalname });
+  res.status(201).json({ genCode });
+  // io.emit("file:uploaded", {genCode, fileName: req.file.originalname});
+  // res.json({ url: result.Location });
 });
  
 //@des Get uploaded file or text
@@ -63,33 +69,43 @@ export const getData = expressAsyncHandler(async (req, res) => {
 
   if (!code) {
     res.status(400);
-    throw new Error("No Code provided");
+    throw new Error("No code provided");
   }
 
   const cachedData = await redis.get(code);
   if (cachedData) {
     try {
-      const parsedData = JSON.parse(cachedData);
-      
-      if (parsedData.fileData && parsedData.fileName && parsedData.fileType) {
-        const fileBuffer = Buffer.from(parsedData.fileData, "base64");
-        res.header("Content-Type", parsedData.fileType);
-        res.header("Content-Disposition", `attachment; filename=${parsedData.fileName}`);
-        return res.status(200).send(fileBuffer);
+      const parsed = JSON.parse(cachedData);
+      if (parsed.fileData && parsed.fileName && parsed.fileType) {
+        const { fileData, fileName, fileType } = parsed;
+
+        res.setHeader("Content-Type", fileType);
+        res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+
+        return res.redirect(`${process.env.PUBLIC_R2_URL}/${fileName}`);
       }
-      return res.status(200).json({ text: cachedData });
-    } catch (error) {
+    } catch (err) {
       return res.status(200).json({ text: cachedData });
     }
   }
 
-  const textData = await File.findOne({ code });
-
-  if (!textData) {
+  const rawData = await File.findOne({ code });
+  if (!rawData) {
     res.status(404);
     throw new Error("Data not found or expired!");
   }
 
-  await redis.set(code, textData.text, "EX", 600);
-  res.status(200).json({ text: textData.text });
+  if (rawData.fileData && rawData.fileName && rawData.fileType) {
+    const { fileData, fileName, fileType } = rawData;
+
+    res.setHeader("Content-Type", fileType);
+    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+
+    await redis.set(code, JSON.stringify({ fileData, fileName, fileType }), "EX", 600);
+
+    return res.redirect(`${process.env.PUBLIC_R2_URL}/${fileName}`);
+  }
+
+  await redis.set(code, rawData.text, "EX", 600);
+  return res.status(200).json({ text: rawData.text });
 });
