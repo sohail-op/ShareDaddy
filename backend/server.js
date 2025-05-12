@@ -14,10 +14,9 @@ dotenv.config();
 const port = process.env.PORT || 5001;
 
 const allowedOrigins = [
-  "https://sharedaddy.onrender.com",
-  "https://share-daddy.vercel.app",
-  "https://sharedaddy.co",
-  "https://www.sharedaddy.co",
+  "share-daddy.vercel.app",
+  "sharedaddy.co",
+  "www.sharedaddy.co",
   process.env.FRONTEND_BASE_URL,
 ];
 
@@ -46,7 +45,7 @@ app.use(
 
 app.use(compression());
 
-app.use(express.json({ limit: '100mb' } ));
+app.use(express.json( ));
 
 app.use(errorHandler);
 
