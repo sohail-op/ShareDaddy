@@ -7,6 +7,7 @@ import router from "./routes/textRoute.js";
 import connectDb from "./config/dbConnection.js";
 import errorHandler from "./middleware/errorHandler.js";
 import {app, server} from "./socket/socket.js";
+import { limiter } from "./middleware/rateLimiter.js";
 
 connectDb();
 dotenv.config();
@@ -19,7 +20,6 @@ const allowedOrigins = [
   "www.sharedaddy.co",
   process.env.FRONTEND_BASE_URL,
 ];
-
 
 app.use(
   cors({
@@ -42,13 +42,10 @@ app.use(
   })
 );
 
-
+app.use(limiter)
 app.use(compression());
-
 app.use(express.json( ));
-
 app.use(errorHandler);
-
 app.use("/api", router);
 
 app.get("/", (req, res) => {
