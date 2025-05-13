@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 // import socket from "../utils/socket";
 
 const useTextRetrieval = () => {
@@ -24,12 +25,14 @@ const useTextRetrieval = () => {
       if (data.text) {
         setText(data.text);
         navigator.clipboard.writeText(data.text);
+        toast.success("Text retrieved");
         // socket.emit("getCode", textCode);
       } else {
-        console.warn("No text found!");
+        toast.error("No text found!");
       }
     } catch (error) {
       console.error("Error retrieving text:", error);
+      toast.error("Error retrieving text");
     }
   };
 

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 // import io from 'socket.io-client';
 
 // const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL);
@@ -15,7 +16,7 @@ const useFileUpload = () => {
   };
 
   const handleFileUpload = async () => {
-    if (!file) return alert('Please select a file first.');
+    if (!file) return toast.error('Please select a file to upload');
 
     try {
       const formData = new FormData();
@@ -33,9 +34,11 @@ const useFileUpload = () => {
       if (data.genCode) {
         setGeneratedCode(data.genCode);
         // socket.emit('getCode', data.genCode);
+        toast.success('File Shared');
       }
     } catch (error) {
       console.error('Error uploading file:', error.message);
+      toast.error('Error uploading file');
     }
   };
 

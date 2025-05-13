@@ -7,6 +7,7 @@ import TextInput from "./ui/TextInput";
 import Button from "./ui/Button";
 import useTextShare from "../hooks/useTextShare";
 import useFileUpload from "../hooks/useFileUpload";
+import { Bounce, ToastContainer } from "react-toastify";
 
 const ShareContent = () => {
   const { generatedCode: textCode, text, setText, handleTextUpload } = useTextShare();
@@ -71,14 +72,30 @@ const ShareContent = () => {
           }}
           onKeyDown={handleKeyDownForFile}
         />
-  
+
         <Button
           text="Generate Share Code"
           onClick={isTextMode ? handleTextUpload : handleFileUpload}
         />
+
+        <ToastContainer
+          position="top-center"
+          autoClose={1500}
+          limit={1}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+          theme="light"
+          transition={Bounce}
+        />
+
       </div>
     </div>
-  );  
+  );
 };
 
 export default ShareContent;

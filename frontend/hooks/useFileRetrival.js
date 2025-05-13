@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 // import socket from "../utils/socket";
 
 const useFileRetrieval = () => {
@@ -23,9 +24,11 @@ const useFileRetrieval = () => {
       if (!response.ok) {
         throw new Error("Failed to retrieve content.");
       }
+      toast.success("File retrieved successfully!")
       handleOpenFile(response.url);
     } catch (error) {
       console.error("Error retrieving content:", error);
+      toast.error("Error retrieving content.");
     }
   };
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 // import socket from "../utils/socket";
 
 const useTextShare = () => {
@@ -22,9 +23,12 @@ const useTextShare = () => {
       if (data.genCode) {
         setGeneratedCode(data.genCode);
         // socket.emit("getCode", data.genCode);
+
+        toast.success('Text Shared');
       }
     } catch (error) {
       console.error("Error sharing text:", error.message);
+      toast.error('Error uploading text');
     }
   };
 
