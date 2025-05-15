@@ -23,7 +23,7 @@ const useTextShare = () => {
       if (data.genCode) {
         setGeneratedCode(data.genCode);
         // socket.emit("getCode", data.genCode);
-
+        
         toast.success('Text Shared');
       }
     } catch (error) {

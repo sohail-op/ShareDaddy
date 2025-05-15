@@ -14,8 +14,8 @@ const rochester = Rochester({
 
 
 export const metadata: Metadata = {
-  title: "Text and File Sharing",
-  description: "Easy & fast text & file sharing for your friends.",
+  title: "Daddy of Sharing",
+  description: "Effortless text and file sharing for fast, easy, and secure.",
 };
 
 export default function RootLayout({

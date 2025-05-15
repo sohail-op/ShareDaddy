@@ -26,7 +26,7 @@ export const uploadText = expressAsyncHandler(async (req, res) => {
     await redis.set(genCode, text, "EX", 600); //store in Redis
     res.status(201).json({ genCode });
   
-  io.to(genCode).emit("newText", text);
+  // io.to(genCode).emit("newText", text);
 });
 
 //@des Upload File

@@ -42,9 +42,11 @@ app.use(
   })
 );
 
+app.set('trust proxy', 40);
 app.use(limiter)
+
 app.use(compression());
-app.use(express.json( ));
+app.use(express.json());
 app.use(errorHandler);
 app.use("/api", router);
 
