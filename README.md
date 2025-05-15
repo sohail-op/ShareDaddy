@@ -1,47 +1,96 @@
-Installation and Setup
+# ShareDaddy
 
-    Clone the repository to your local machine.
-    Navigate to the project directory in your terminal.
-    Install dependencies using npm install.
-    Start the development server with npm run dev.
+Effortless text and file sharing – fast, easy, and secure.
 
-Usage
+## ✨ Features
 
-    Open the application in your browser.
-    Paste the text you want to share into the textarea.
-    Click the "Share" button to generate a code for sharing.
-    Copy the generated code and share it with others.
-    To access shared text, go to the "Enter Code" page and enter the code.
+- Instant text and file sharing via unique short codes
+- Cloudflare R2 for fast, secure file uploads
+- Temporary storage with Redis caching
+- Secure and rate-limited API
+- Auto-expiry (30 minutes) with TTL MongoDB documents
+- Beautiful, responsive frontend with Tailwind CSS & Next.js <br>
+~~- Real-time capabilities via Socket.IO~~
 
-Technologies Used
+## 📂 Project Structure
 
-    React: Frontend framework for building user interfaces.
-    Next.js: React framework for server-side rendering and routing.
-    Fetch API: Used for making HTTP requests to the server.
-    Tailwind CSS: Utility-first CSS framework for styling.
+```
+backend/
+│
+├── config/              
+├── controllers/        
+├── middleware/
+├── model/       
+├── routes/             
+├── socket/    
+└── server.js
+frontend/
+│
+├── app/          
+├── public/     
+├── components/ 
+│   └── ui
+├── hooks
+└── utils
+```
 
-Folder Structure
+## 🔧 Tech Stack
 
-├── pages/
-│   ├── index.js     # Home page component
-│   ├── code.js      # Enter Code page component
-│   └── api/
-│       └── uploadText.js   # API route for uploading text
-├── public/
-│   └── favicon.ico   # Favicon icon
-├── styles/
-│   └── Home.module.css   # Styles for Home component
-├── .gitignore    # Git ignore file
-├── package.json  # Project dependencies and scripts
-├── README.md     # Project documentation
-└── next.config.js   # Next.js configuration file
+### Frontend
+- Next.js 13+
+- Tailwind CSS
+- React Icons & Lucide
 
-API Endpoint
+### Backend
+- Node.js with Express
+- MongoDB Atlas with TTL indexes
+- Redis (ioredis)
+- Cloudflare R2 (S3-compatible storage)
+- Multer for in-memory file handling
+- Rate limiting with express-rate-limit <br>
+~~- Real-time with Socket.IO~~
 
-The application uses a local API endpoint for uploading text content. The endpoint is located at http://127.0.0.1:5000/api/uploadText and accepts POST requests with JSON data containing the text to be uploaded.
-Credits
+## 📦 Environment Setup
 
-This project was created by Sohail Khan. Feel free to contribute and improve the application as needed.
-License
+Set up environment variables  
+Create `.env` files in `backend/` and `frontend/` with the following:
 
-This project is licensed under the MIT License. Feel free to use, modify, and distribute the code as per the license terms.****
+**Backend .env**
+```
+PORT=5001
+MONGODB_URI=your_mongodb_uri
+REDIS_URL=your_redis_connection
+R2_ENDPOINT=https://<your-r2-endpoint>
+R2_ACCESS_KEY=your_access_key
+R2_SECRET_KEY=your_secret_key
+PUBLIC_R2_URL=https://your-public-r2-url
+FRONTEND_BASE_URL=https://your-frontend-url
+```
+
+**Frontend .env**
+```
+NEXT_PUBLIC_BACKEND_BASE_URL=https://your-backend-url
+```
+
+## 📤 API Endpoints
+
+| Method | Endpoint             | Description                  |
+|--------|----------------------|------------------------------|
+| POST   | `/api/uploadText`    | Upload text content          |
+| POST   | `/api/uploadFile`    | Upload a file                |
+| GET    | `/api/getData/:code` | Get text or file by code     |
+
+## 🛡️ Security Features
+
+- CORS with strict domain allowlist
+- Redis rate limiting (10 req per min)
+- File scanning & safe redirects
+- Temporary file access with expiry
+
+## 🤝 Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request.
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
